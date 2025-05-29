@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# Espera LocalStack subir
-sleep 10
+
 
 # Cria buckets
 awslocal s3 mb s3://image-input

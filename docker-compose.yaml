@@ -1,27 +1,27 @@
 services:
   localstack:
+    container_name: localstack-1
     image: localstack/localstack
     ports:
       - "4566:4566"
     environment:
       - SERVICES=s3,sqs
-      - DEBUG=1
+      - DEFAULT_REGION=us-east-1
     volumes:
-      - ./localstack:/var/lib/localstack
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "./commands.sh:/docker-commands-initaws.d/commands.sh"
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
   app:
     build: .
-    ports:
-      - "5000:5000"
+    container_name: app-1
+    depends_on:
+      - localstack
     environment:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=us-east-1
-      - LOCALSTACK_HOST=localstack
-      - USE_LOCALSTACK=1
-    depends_on:
-      - localstack
+      - AWS_REGION=us-east-1
     volumes:
       - .:/app
-    command: sh commands.sh
+    command: flask run --host=0.0.0.0 --port=5000
+    ports:
+      - "5000:5000"

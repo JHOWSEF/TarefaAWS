@@ -2,7 +2,10 @@ import boto3
 
 sqs = boto3.client(
     'sqs',
-    endpoint_url='http://localstack:4566'
+    endpoint_url='http://localstack:4566',
+    region_name='us-east-1',
+    aws_access_key_id='test',
+    aws_secret_access_key='test'
 )
 
 QUEUE_URL_INPUT = sqs.get_queue_url(QueueName='new-image-input.fifo')['QueueUrl']

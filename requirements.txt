@@ -4,3 +4,4 @@ opencv-python
 flask-restx
 localstack-client
 pytest
+awscli-local

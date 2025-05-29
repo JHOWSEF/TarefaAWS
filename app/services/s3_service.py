@@ -5,7 +5,10 @@ session = boto3.session.Session()
 
 s3 = session.client(
     service_name="s3",
-    endpoint_url="http://localstack:4566"
+    endpoint_url='http://localstack:4566',
+    region_name='us-east-1',
+    aws_access_key_id='test',
+    aws_secret_access_key='test'
 )
 
 def upload_file(bucket, file_name, file_data):
