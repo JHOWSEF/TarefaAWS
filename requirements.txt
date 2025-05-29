@@ -1,0 +1,6 @@
+flask
+boto3
+opencv-python
+flask-restx
+localstack-client
+pytest
