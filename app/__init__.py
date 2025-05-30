@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__)
     api.init_app(app)
 
-    from .routes import ns as image_ns
-    api.add_namespace(image_ns)
+    from .routes import api as image_api
+    api.add_namespace(image_api)
 
     return app
