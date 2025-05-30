@@ -10,19 +10,33 @@ sqs = boto3.client(
     aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', 'test')
 )
 
-
-def get_queue_url(queue_name):
+def create_queue_if_not_exists(queue_name):
     try:
         response = sqs.get_queue_url(QueueName=queue_name)
         return response['QueueUrl']
     except ClientError as e:
-        print(f"❌ Queue {queue_name} not found: {e}")
-        raise
+        if e.response['Error']['Code'] == 'AWS.SimpleQueueService.NonExistentQueue':
+            print(f"Fila {queue_name} não existe. Criando fila...")
+            sqs.create_queue(
+                QueueName=queue_name,
+                Attributes={
+                    'FifoQueue': 'true',
+                    'ContentBasedDeduplication': 'false'
+                }
+            )
+            response = sqs.get_queue_url(QueueName=queue_name)
+            return response['QueueUrl']
+        else:
+            print(f"Erro ao acessar fila {queue_name}: {e}")
+            raise
 
+def get_queue_urls():
+    queue_url_input = create_queue_if_not_exists('new-image-input.fifo')
+    queue_url_processed = create_queue_if_not_exists('new-image-processed.fifo')
+    return queue_url_input, queue_url_processed
 
-QUEUE_URL_INPUT = get_queue_url('new-image-input.fifo')
-QUEUE_URL_PROCESSED = get_queue_url('new-image-processed.fifo')
-
+QUEUE_URL_INPUT = None
+QUEUE_URL_PROCESSED = None
 
 def send_message(queue_url, body, group_id='default'):
     sqs.send_message(
@@ -31,7 +45,6 @@ def send_message(queue_url, body, group_id='default'):
         MessageGroupId=group_id
     )
 
-
 def receive_messages(queue_url):
     response = sqs.receive_message(
         QueueUrl=queue_url,
@@ -39,7 +52,6 @@ def receive_messages(queue_url):
         WaitTimeSeconds=2
     )
     return response.get('Messages', [])
-
 
 def delete_message(queue_url, receipt_handle):
     sqs.delete_message(
