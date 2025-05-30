@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_restx import Api
+from app.routes import api as image_api
+
 
 api = Api(
     title="Image Pipeline API",

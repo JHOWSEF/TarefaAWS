@@ -10,6 +10,11 @@ sqs = boto3.client(
     aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', 'test')
 )
 
+def initialize_queue_urls():
+    global QUEUE_URL_INPUT, QUEUE_URL_PROCESSED
+    QUEUE_URL_INPUT, QUEUE_URL_PROCESSED = get_queue_urls()
+
+
 def create_queue_if_not_exists(queue_name):
     try:
         response = sqs.get_queue_url(QueueName=queue_name)
