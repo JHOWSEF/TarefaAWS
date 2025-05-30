@@ -6,9 +6,9 @@ services:
       - "4566:4566"
     environment:
       - SERVICES=s3,sqs
-      - DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_REGION=us-east-1
     volumes:
-      - "./commands.sh:/docker-commands-initaws.d/commands.sh"
+      - "./entrypoint.sh:/docker-entrypoint-initaws.d/entrypoint.sh"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
   app:
@@ -19,7 +19,7 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
-      - AWS_REGION=us-east-1
+      - AWS_DEFAULT_REGION=us-east-1
     volumes:
       - .:/app
     command: flask run --host=0.0.0.0 --port=5000

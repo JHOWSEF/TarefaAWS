@@ -2,6 +2,8 @@ flask
 boto3
 opencv-python
 flask-restx
-localstack-client
+pytesseract
 pytest
-awscli-local
+localstack-client
+
+
