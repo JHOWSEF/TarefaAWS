@@ -13,7 +13,7 @@ Este sistema permite:
 
 ---
 
-## 🔥 Diagrama da Aplicação
+##  Diagrama da Aplicação
 
 ```plaintext
 Usuário ⇄ API Flask ⇄ S3 (image-input)
@@ -27,7 +27,7 @@ Usuário ⇄ API Flask ⇄ S3 (image-input)
 
 ---
 
-## 🚀 Como executar localmente
+##  Como executar localmente
 
 ### ✅ Pré-requisitos
 
@@ -50,7 +50,7 @@ Isso irá:
 
 ## ⚙️ Funcionalidades
 
-### 🩺 Healthcheck
+###  Healthcheck
 
 ```http
 GET /image/healthcheck
@@ -64,7 +64,7 @@ GET /image/healthcheck
 
 ---
 
-### ⬆️ Upload de Imagem
+###  Upload de Imagem
 
 ```http
 POST /image/upload
@@ -78,7 +78,7 @@ curl -X POST http://localhost:5000/image/upload   -F "file=@sua_imagem.png"
 
 ---
 
-### 🚀 Processar Imagem (executa o worker manualmente)
+###  Processar Imagem (executa o worker manualmente)
 
 ```http
 POST /image/process
@@ -92,7 +92,7 @@ curl -X POST http://localhost:5000/image/process
 
 ---
 
-### 📥 Listar imagens processadas
+###  Listar imagens processadas
 
 ```http
 GET /image/processed
@@ -110,7 +110,7 @@ GET /image/processed
 
 ---
 
-### 📸 Visualizar imagem processada
+###  Visualizar imagem processada
 
 ```http
 GET /image/processed/<filename>
@@ -132,7 +132,7 @@ Acesse no navegador:
 http://localhost:5000/static/index.html
 ```
 
-### ✔️ Funcionalidades da página:
+###  Funcionalidades da página:
 
 - Upload de imagens
 - Botão para processar
@@ -140,7 +140,7 @@ http://localhost:5000/static/index.html
 
 ---
 
-## 📄 Swagger - Documentação da API
+##  Swagger - Documentação da API
 
 A documentação Swagger é gerada automaticamente via **Flask-RESTX**.
 
