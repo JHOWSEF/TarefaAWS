@@ -1,9 +1,13 @@
-from .services import s3_service, sqs_service
+from .services import s3_service
 from .image_processor import binarize_image
+from app.services.sqs_service import SQSService
 import io
 
+sqs_service = SQSService()
+
 def process_message():
-    messages = sqs_service.receive_messages(sqs_service.QUEUE_URL_INPUT)
+    messages = sqs_service.receive_messages(sqs_service.queue_url_input)
+
     if not messages:
         print("No messages to process.")
         return
@@ -26,10 +30,10 @@ def process_message():
             s3_service.upload_file('image-processed', filename, file_like)
 
             # Envia notificação para fila processados
-            sqs_service.send_message(sqs_service.QUEUE_URL_PROCESSED, filename)
+            sqs_service.send_message(sqs_service.queue_url_processed, filename)
 
             # Deleta mensagem da fila input
-            sqs_service.delete_message(sqs_service.QUEUE_URL_INPUT, msg['ReceiptHandle'])
+            sqs_service.delete_message(sqs_service.queue_url_input, msg['ReceiptHandle'])
 
             print(f"✅ Processed and uploaded {filename}")
 
